@@ -1,0 +1,9 @@
+langchain
+openxlab
+transformers
+torch
+typing
+gradio==4.4.0
+sentence-transformers
+chromadb
+pysqlite3-binary
