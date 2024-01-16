@@ -1,0 +1,11 @@
+lmdeploy
+streamlit
+torch
+transformers
+langchain
+openxlab
+typing
+gradio==4.4.0
+sentence-transformers
+chromadb
+pysqlite3-binary
