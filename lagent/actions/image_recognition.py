@@ -43,4 +43,4 @@ class ImageRecognition(BaseAction):
 
     def _image_recognition(self,
                 query: str) -> str:
-        return 'image recognition response here is a test'
+        return 'image recognition response here is a apple'
