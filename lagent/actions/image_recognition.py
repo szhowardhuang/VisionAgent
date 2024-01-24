@@ -16,7 +16,10 @@ DEFAULT_DESCRIPTION = """一个进行图片识别的API。
 class ImageRecognition(BaseAction):
 
     def __init__(self,
-                 description: str = DEFAULT_DESCRIPTION,) -> None:
+                 description: str = DEFAULT_DESCRIPTION,
+                 name: Optional[str] = None,
+                 enable: bool = True,
+                 disable_description: Optional[str] = None) -> None:
         super().__init__(description)
 
 
@@ -30,7 +33,7 @@ class ImageRecognition(BaseAction):
             ActionReturn: The action return.
         """
 
-        tool_return = ActionReturn(url=None, args=None)
+        tool_return = ActionReturn(url=None, args=None, type=self.name)
         try:
             response = self._image_recognition(query)
             print("Enter Image Recognition entry")
