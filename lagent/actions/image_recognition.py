@@ -2,6 +2,7 @@ import os
 from typing import List, Optional, Tuple, Union
 
 import requests
+import json
 
 from lagent.schema import ActionReturn, ActionStatusCode
 from .base_action import BaseAction
@@ -36,7 +37,6 @@ class ImageRecognition(BaseAction):
         tool_return = ActionReturn(url=None, args=None, type=self.name)
         try:
             response = self._image_recognition(query)
-            print("Enter Image Recognition entry")
             tool_return.result = dict(text=str(response))
             tool_return.state = ActionStatusCode.SUCCESS
         except Exception as e:
@@ -46,4 +46,15 @@ class ImageRecognition(BaseAction):
 
     def _image_recognition(self,
                 query: str) -> str:
-        return 'image recognition response here is a apple'
+        print("Enter Image Recognition entry")
+        data = json.loads(query)
+        image_path = data.get("image_path", None)
+        if image_path is not None:
+            print(f"please do mm detection " + image_path)
+            image_class = "apple"
+            # image_class = image_detection_yolo(image_path)   
+        else:
+            print("image_path不存在")
+            image_class = "unknown"
+        return 'image recognition response here is a ' + image_class
+
