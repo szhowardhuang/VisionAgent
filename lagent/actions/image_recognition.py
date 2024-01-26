@@ -7,6 +7,30 @@ import json
 from lagent.schema import ActionReturn, ActionStatusCode
 from .base_action import BaseAction
 
+#mmdetection
+from mmdet.apis import DetInferencer
+
+#initial model
+inferencer_mmdet = DetInferencer(model='rtmdet_tiny_8xb32-300e_coco')
+
+# COCO dataset class
+classes_cocodataset = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 
+           'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant',
+           'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog',
+           'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra',
+           'giraffe', 'backpack', 'umbrella', 'handbag', 'tie',
+           'suitcase', 'frisbee', 'skis', 'snowboard', 'sports ball',
+           'kite', 'baseball bat', 'baseball glove', 'skateboard',
+           'surfboard', 'tennis racket', 'bottle', 'wine glass', 'cup',
+           'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+           'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza',
+           'donut', 'cake', 'chair', 'couch', 'potted plant', 'bed',
+           'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote',
+           'keyboard', 'cell phone', 'microwave', 'oven', 'toaster',
+           'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
+           'teddy bear', 'hair drier', 'toothbrush')
+
+
 DEFAULT_DESCRIPTION = """一个进行图片识别的API。
 当你需要对于一个图片进行识别时，可以使用这个API。
 优先使用ImageRecognition来进行图片识别。
@@ -50,9 +74,14 @@ class ImageRecognition(BaseAction):
         data = json.loads(query)
         image_path = data.get("image_path", None)
         if image_path is not None:
-            print(f"please do mm detection " + image_path)
-            image_class = "apple"
-            # image_class = image_detection_yolo(image_path)   
+            result = inferencer_mmdet(image_path, out_dir='./outputs/', no_save_pred=False, print_result=False)   
+            result_prediction = result.get('predictions')[0]
+            result_labels = result_prediction.get('labels')
+            result_scores = result_prediction.get('scores')
+            result_bboxes = result_prediction.get('bboxes')
+
+            #only the first class
+            image_class = classes_cocodataset[result_labels[0]]
         else:
             print("image_path不存在")
             image_class = "unknown"
