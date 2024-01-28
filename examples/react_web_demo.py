@@ -8,7 +8,7 @@ from lagent.actions import ActionExecutor, GoogleSearch, PythonInterpreter, Imag
 from lagent.agents.react import ReAct
 from lagent.llms import GPTAPI
 from lagent.llms.huggingface import HFTransformerCasualLM
-
+from openxlab.model import download
 
 class SessionState:
 
@@ -89,7 +89,7 @@ class StreamlitUI:
                     model_type=option)
             else:
                 st.session_state['model_map'][option] = HFTransformerCasualLM(
-                    '/root/model/Shanghai_AI_Laboratory/internlm-chat-7b')
+                    '/home/xlab-app-center/InternLM-chat-7b')
         return st.session_state['model_map'][option]
 
     def initialize_chatbot(self, model, plugin_action):
@@ -207,9 +207,16 @@ def main():
         logger.info(agent_return.inner_steps)
         st.session_state['ui'].render_assistant(agent_return)
 
+def Download():
+    download(model_repo='OpenLMLab/InternLM-chat-7b',output='/home/xlab-app-center/InternLM-chat-7b')
 
+def set_ENV():
+    os.system('export SERPER_API_KEY=31ffc1f18342a562e724d4eeb8a515f9fc82xxxx')
+    
 if __name__ == '__main__':
     root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     root_dir = os.path.join(root_dir, 'tmp_dir')
     os.makedirs(root_dir, exist_ok=True)
+    Download()
+    set_ENV()
     main()

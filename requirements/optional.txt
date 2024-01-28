@@ -8,4 +8,4 @@ typing
 gradio==4.4.0
 sentence-transformers
 chromadb
-pysqlite3-binary
+# pysqlite3-binary
